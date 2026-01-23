@@ -1,5 +1,7 @@
 import prisma from '@/app/lib/prisma'
 
+export const revalidate = 0; // Desabilita cache para sempre buscar dados frescos
+
 export default async function Home() {
   const users = await prisma.user.findMany();
   return (
