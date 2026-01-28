@@ -44,17 +44,19 @@ export async function PUT(
       id: updatedPost.id,
       title: updatedPost.title,
       author: updatedPost.author,
-      date: updatedPost.date.toISOString(),
+      date: updatedPost.date,
       excerpt: updatedPost.excerpt,
       content: updatedPost.content,
       imageUrls: updatedPost.imageUrls,
-      comments: updatedPost.comments.map(c => ({
-        id: c.id,
-        author: c.author,
-        content: c.content,
-        timestamp: c.timestamp.toISOString(),
-        isApproved: c.isApproved,
-      })),
+      comments: updatedPost.comments.map((c: {
+      id: string;
+      author: string;
+      content: string;
+    }) => ({
+      id: c.id,
+      author: c.author,
+      content: c.content,
+    }))
     });
   } catch (error) {
     console.error('Failed to update post:', error);
@@ -164,18 +166,18 @@ export async function PATCH(
       id: updatedPost.id,
       title: updatedPost.title,
       author: updatedPost.author,
-      date: updatedPost.date.toISOString(),
+      date: updatedPost.date,
       excerpt: updatedPost.excerpt,
       content: updatedPost.content,
       imageUrls: updatedPost.imageUrls,
       carrousel: updatedPost.carrousel,
       comments: updatedPost.comments.map(c => ({
-        id: c.id,
-        author: c.author,
-        content: c.content,
-        timestamp: c.timestamp.toISOString(),
-        isApproved: c.isApproved,
-      })),
+      id: c.id,
+      author: c.author,
+      content: c.content,
+      timestamp: c.timestamp.toISOString(), // Date → string
+      isApproved: c.isApproved,              // boolean mantém boolean
+    })),
     });
   } catch (error) {
     console.error('Failed to patch post:', error);

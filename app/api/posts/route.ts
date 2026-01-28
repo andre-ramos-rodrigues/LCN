@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/app/lib/prisma';
+import { Post, Comment } from '@/types';
 
 export async function GET() {
   try {
@@ -16,19 +17,19 @@ export async function GET() {
       id: post.id,
       title: post.title,
       author: post.author,
-      date: post.date.toISOString(),
+      date: post.date.toISOString(), // 👈 AQUI
       excerpt: post.excerpt,
       content: post.content,
       imageUrls: post.imageUrls,
       carrousel: post.carrousel,
-      comments: post.comments.map(comment => ({
-        id: comment.id,
-        author: comment.author,
-        content: comment.content,
-        timestamp: comment.timestamp.toISOString(),
-        isApproved: comment.isApproved,
+      comments: post.comments.map(c => ({
+        id: c.id,
+        author: c.author,
+        content: c.content,
+        timestamp: c.timestamp.toISOString(),
+        isApproved: c.isApproved,
       })),
-    }));
+    }))
 
     return NextResponse.json(transformedPosts);
   } catch (error) {
@@ -72,7 +73,7 @@ export async function POST(request: Request) {
       id: newPost.id,
       title: newPost.title,
       author: newPost.author,
-      date: newPost.date.toISOString(),
+      date: newPost.date,
       excerpt: newPost.excerpt,
       content: newPost.content,
       imageUrls: newPost.imageUrls,

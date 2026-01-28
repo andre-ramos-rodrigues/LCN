@@ -4,8 +4,19 @@ import Carousel from './components/Carousel';
 import Link from 'next/link';
 import Image from 'next/image';
 import SocialLinks from './components/Social';
+import { Post } from '@/types';
 
 export const revalidate = 0; // Desabilita cache para sempre buscar dados frescos
+
+type PostPreview = {
+  id: string
+  title: string
+  author: string
+  date: string
+  excerpt: string
+  imageUrls: string[]
+  carrousel: boolean
+}
 
 export default async function Home() {
 
@@ -42,33 +53,54 @@ export default async function Home() {
 
             {/* Recent Blog Posts Section */}
             {recentPosts.length > 0 && (
-                <div>
-                    <h2 className="text-3xl font-bold text-center text-text-primary mb-8">Recent Blog Posts</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-2">
-                        {recentPosts.map(post => (
-                            <div key={post.id} className="bg-base-100 rounded-lg shadow-lg overflow-hidden border border-blue-200 flex flex-col group">
-                                <div className="overflow-hidden rounded-t-lg">
-                                    <Image 
-                                        src={post.imageUrls[0]} 
-                                        alt={post.title} 
-                                        className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-                                        width={400}
-                                        height={192}
-                                    />
-                                </div>
-                                <div className="p-6 flex flex-col flex-grow">
-                                    <h3 className="text-xl font-bold text-primary mb-2">{post.title}</h3>
-                                    <p className="text-sm text-text-secondary mb-4">By {post.author} on {new Date(post.date).toLocaleDateString()}</p>
-                                    <p className="text-text-secondary mb-4 flex-grow">{post.excerpt}</p>
-                                    <Link href={`/post/${post.id}`} className="self-start mt-auto text-primary font-semibold hover:underline">
-                                        Read More &rarr;
-                                    </Link>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
+  <div>
+    <h2 className="text-3xl font-bold text-center text-text-primary mb-8">
+      Recent Blog Posts
+    </h2>
+
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-2">
+            {recentPosts.map(post => (
+                <div
+                key={post.id}
+                className="bg-base-100 rounded-lg shadow-lg overflow-hidden border border-blue-200 flex flex-col group"
+                >
+                <div className="overflow-hidden rounded-t-lg">
+                    <Image
+                    src={post.imageUrls[0]}
+                    alt={post.title}
+                    className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                    width={400}
+                    height={192}
+                    />
                 </div>
-            )}
+
+                <div className="p-6 flex flex-col grow">
+                    <h3 className="text-xl font-bold text-primary mb-2">
+                    {post.title}
+                    </h3>
+
+                    <p className="text-sm text-text-secondary mb-4">
+                    By {post.author} on{" "}
+                    {new Date(post.date).toLocaleDateString()}
+                    </p>
+
+                    <p className="text-text-secondary mb-4 grow">
+                    {post.excerpt}
+                    </p>
+
+                    <Link
+                    href={`/post/${post.id}`}
+                    className="self-start mt-auto text-primary font-semibold hover:underline"
+                    >
+                    Read More &rarr;
+                    </Link>
+                </div>
+                </div>
+            ))}
+            </div>
+        </div>
+        )}
+
 
             {/* Social Links */}
             <SocialLinks />
