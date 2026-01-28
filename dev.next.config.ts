@@ -1,10 +1,21 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  
+  webpack: (config: any) => {
+    // WSL2-specific file watching fix
+    config.watchOptions = {
+      poll: 1000,       // Check for changes every 1 second
+      aggregateTimeout: 300, // Wait 300ms before rebuilding
+      ignored: [
+        '**/.git/**',
+        '**/.next/**',
+        '**/node_modules/**',
+        '**/.swc/**'
+      ]
+    };
+    return config;
+  },
   reactStrictMode: true,
-  turbopack: {}, // ✅ THIS LINE FIXES THE BUILD
-
   images: {
     remotePatterns: [
       // Unsplash
