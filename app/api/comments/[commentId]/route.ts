@@ -5,12 +5,12 @@ export async function PATCH(
   request: Request,
   context: {
     params: Promise<{
-      postId: string;
+      //postId: string;
       commentId: string;
     }>;
   }
 ) {
-  const { postId, commentId } = await context.params;
+  const { commentId } = await context.params;
 
   try {
     const updatedComment = await prisma.comment.update({
@@ -37,12 +37,12 @@ export async function DELETE(
   request: Request,
   context: {
     params: Promise<{
-      postId: string;
+      //postId: string;
       commentId: string;
     }>;
   }
 ) {
-  const { postId, commentId } = await context.params;
+  const { commentId } = await context.params;
 
   try {
 
