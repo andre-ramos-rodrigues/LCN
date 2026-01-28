@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useApp } from '../../hooks/useApp';
 import { Post } from '../../../types';
 import CarouselManager from '@/app/components/CarouselManager';
+import AllowedImageSources from '@/app/components/AllowedImageSources';
 
 const emptyPost: Omit<Post, 'id' | 'date' | 'comments'> = {
     title: '',
@@ -71,6 +72,8 @@ const ContentManagementPage: React.FC = () => {
             </div>
 
             <PostList posts={posts} onEdit={openModalForEdit} onDelete={deletePost} />
+
+            <AllowedImageSources />
 
             {/* <CarouselManager posts={posts} carouselPostIds={carouselIds} onToggle={toggleCarouselPost} /> */ }
 
