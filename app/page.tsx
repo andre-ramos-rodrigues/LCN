@@ -35,7 +35,7 @@ export default async function Home() {
 
             {/* Hero Section */}
             <div className="text-center py-16 px-6 bg-primary/5 rounded-lg">
-                <h1 className="text-4xl md:text-5xl font-extrabold text-primary">
+                <h1 className="text-4xl md:text-3xl font-extrabold text-primary">
                     Lidar com o mal-estar abre espaço para vislumbrar aquilo que se deseja na vida
                 </h1>
                 <p className="mt-4 text-lg md:text-xl text-text-secondary max-w-3xl mx-auto">
