@@ -1,13 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { compare } from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 import prisma from '../../../lib/prisma';
 
-export async function POST(req: NextRequest) {
-  try {
-    const body = await req.json();
-    const { email, password } = body;
+const JWT_SECRET = process.env.JWT_SECRET!;
 
-    // Validate input
+export async function POST(req: NextRequest) {
+  if (!process.env.JWT_SECRET) {
+  throw new Error('JWT_SECRET is not defined');
+  }
+  try {
+    const { email, password } = await req.json();
+
     if (!email || !password) {
       return NextResponse.json(
         { error: 'Email and password are required' },
@@ -15,30 +19,35 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Find user by email
     const user = await prisma.user.findUnique({
       where: { email },
     });
 
-    if (!user) {
+    if (!user || !(await compare(password, user.password))) {
       return NextResponse.json(
         { error: 'Invalid email or password' },
         { status: 401 }
       );
     }
 
-    // Compare passwords
-    const isPasswordValid = await compare(password, user.password);
-
-    if (!isPasswordValid) {
+    if (user.role !== 'Admin') {
       return NextResponse.json(
-        { error: 'Invalid email or password' },
-        { status: 401 }
+        { error: 'Unauthorized' },
+        { status: 403 }
       );
     }
 
-    // Return user data (don't include password)
-    return NextResponse.json(
+    // 🔐 Create JWT
+    const token = jwt.sign(
+      {
+        sub: user.id.toString(),
+        role: user.role,
+      },
+      JWT_SECRET,
+      { expiresIn: '7d' }
+    );
+
+    const response = NextResponse.json(
       {
         message: 'Login successful',
         user: {
@@ -50,6 +59,25 @@ export async function POST(req: NextRequest) {
       },
       { status: 200 }
     );
+
+    // 🍪 Set httpOnly cookie
+    response.cookies.set('auth_token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      path: '/',
+      maxAge: 60 * 60 * 24 * 7, // 7 days
+    });
+
+    response.cookies.set('role', user.role, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      path: '/',
+      maxAge: 60 * 60 * 24 * 7, // 7 days
+    });
+
+    return response;
   } catch (error) {
     console.error('Login error:', error);
     return NextResponse.json(

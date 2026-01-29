@@ -36,17 +36,17 @@ export default async function Home() {
             {/* Hero Section */}
             <div className="text-center py-16 px-6 bg-primary/5 rounded-lg">
                 <h1 className="text-4xl md:text-5xl font-extrabold text-primary">
-                    Your Journey to Mental Wellness Starts Here
+                    Lidar com o mal-estar abre espaço para vislumbrar aquilo que se deseja na vida
                 </h1>
                 <p className="mt-4 text-lg md:text-xl text-text-secondary max-w-3xl mx-auto">
-                    Explore insightful articles, practical tips, and compassionate guidance to support your mental health and well-being.
+                    Explore artigos e recursos dedicados a promover a saúde mental e o bem-estar emocional.
                 </p>
                 <div className="mt-8 flex justify-center gap-4">
                     <Link href="/blog" className="inline-block bg-primary text-white font-bold text-lg px-8 py-3 rounded-md hover:bg-primary/90 transition-colors">
-                        Explore Blog
+                        Artigos
                     </Link>
                     <Link href="/contact" className="inline-block bg-secondary text-white font-bold text-lg px-8 py-3 rounded-md hover:bg-secondary/90 transition-colors">
-                        Contact Us
+                        Agende uma sessão
                     </Link>
                 </div>
             </div>
@@ -55,7 +55,7 @@ export default async function Home() {
             {recentPosts.length > 0 && (
   <div>
     <h2 className="text-3xl font-bold text-center text-text-primary mb-8">
-      Recent Blog Posts
+      Postagens recentes
     </h2>
 
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-2">
@@ -92,7 +92,7 @@ export default async function Home() {
                     href={`/post/${post.id}`}
                     className="self-start mt-auto text-primary font-semibold hover:underline"
                     >
-                    Read More &rarr;
+                    Leia mais &rarr;
                     </Link>
                 </div>
                 </div>

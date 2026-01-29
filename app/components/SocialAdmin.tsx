@@ -115,13 +115,13 @@ export default function SocialLinksAdmin() {
                 onClick={() => handleEdit(social)}
                 className="text-primary font-medium"
               >
-                Edit
+                Editar
               </button>
               <button
                 onClick={() => handleDelete(social.id)}
                 className="text-red-500 font-medium"
               >
-                Delete
+                Deletar
               </button>
             </div>
           </div>

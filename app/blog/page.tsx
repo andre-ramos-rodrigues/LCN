@@ -34,14 +34,14 @@ const BlogPage: React.FC = () => {
     return (
         <div className="space-y-12">
             <div className="text-center">
-                <h1 className="text-4xl md:text-5xl font-extrabold text-primary">Our Blog</h1>
-                <p className="mt-4 text-lg text-text-secondary">Insights and articles on mental wellness.</p>
+                <h1 className="text-4xl md:text-5xl font-extrabold text-primary">Postagens</h1>
+                <p className="mt-4 text-lg text-text-secondary">Artigos sobre psicanálise e psicologia.</p>
             </div>
 
             <div className="max-w-xl mx-auto">
                 <input
                     type="text"
-                    placeholder="Search articles..."
+                    placeholder="Pesquisar artigos..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="w-full px-4 py-3 bg-base-100 border border-gray-300 rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
@@ -60,11 +60,11 @@ const BlogPage: React.FC = () => {
                             </div>
                             <div className="p-6 flex flex-col flex-grow">
                                 <h2 className="text-xl font-bold text-primary mb-2">{post.title}</h2>
-                                <p className="text-sm text-text-secondary mb-4">By {post.author} on {new Date(post.date).toLocaleDateString()}</p>
+                                <p className="text-sm text-text-secondary mb-4">Por {post.author} em {new Date(post.date).toLocaleDateString()}</p>
 
                                 <p className="text-text-secondary mb-4 flex-grow">{post.excerpt}</p>
                                 <Link href={`/post/${post.id}`} className="self-start mt-auto text-primary font-semibold hover:underline">
-                                    Read More &rarr;
+                                    Leia mais &rarr;
                                 </Link>
 
                                 {role === UserRole.Admin && (
@@ -77,7 +77,7 @@ const BlogPage: React.FC = () => {
                         </div>
                     ))
                 ) : (
-                    <p className="text-text-secondary md:col-span-2 lg:col-span-3 text-center">No posts found matching your search.</p>
+                    <p className="text-text-secondary md:col-span-2 lg:col-span-3 text-center">Sem postagens ainda.</p>
                 )}
             </div>
         </div>

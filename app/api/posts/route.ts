@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/app/lib/prisma';
 import { Post, Comment } from '@/types';
+import { cookies } from 'next/headers';
 
 export async function GET() {
   try {
@@ -42,6 +43,17 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
+  const cookieStore = await cookies();
+  const token = cookieStore.get('auth_token')?.value;
+  const role = cookieStore.get('role')?.value;
+
+  if (!token) {
+    return NextResponse.json({ user: null }, { status: 401 });
+  }
+
+  if (role !== 'Admin') {
+    return NextResponse.json({ user: null }, { status: 402 });
+  }
   try {
     const { title, author, excerpt, content, imageUrls } = await request.json();
 

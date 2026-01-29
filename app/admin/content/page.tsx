@@ -1,5 +1,6 @@
 'use client'
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { useApp } from '../../hooks/useApp';
 import { Post } from '../../../types';
 import CarouselManager from '@/app/components/CarouselManager';
@@ -14,10 +15,12 @@ const emptyPost: Omit<Post, 'id' | 'date' | 'comments'> = {
 };
 
 const ContentManagementPage: React.FC = () => {
+    const { user } = useApp();
     const { posts, addPost, updatePost, deletePost, patchPost, carouselPostIds, toggleCarouselPost, editingPostId, setEditingPostId } = useApp();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingPost, setEditingPost] = useState<Omit<Post, 'id' | 'date' | 'comments'> | Post | null>(null);
     //const [carouselIds, setcarouselPostIds] = useState<string[]>(carouselPostIds);
+    const router = useRouter();
 
     const openModalForNew = () => {
         setEditingPostId(null);
@@ -38,6 +41,12 @@ const ContentManagementPage: React.FC = () => {
     };
 
         useEffect(() => {
+         if (user?.role !== 'Admin') {
+            console.log('Access denied: User is not an admin');
+
+            router.push('/login');
+            return   }
+
         //setcarouselPostIds(posts.filter(post => post.carrousel === true).map(post => post.id));
 
         if (editingPostId) {
@@ -46,7 +55,7 @@ const ContentManagementPage: React.FC = () => {
                 openModalForEdit(postToEdit);
             }
         }
-    }, [editingPostId, posts]);
+    }, [editingPostId, posts, router, user]);
 
     const handleSave = (postData: Omit<Post, 'id' | 'date' | 'comments'> | Post) => {
         const cleanedPostData = {

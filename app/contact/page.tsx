@@ -21,21 +21,21 @@ const ContactPage: React.FC = () => {
 
     return (
         <div className="max-w-2xl mx-auto">
-            <h1 className="text-4xl font-extrabold text-text-primary mb-4 text-center">Contact Us</h1>
+            <h1 className="text-4xl font-extrabold text-text-primary mb-4 text-center">Envie sua mensagem</h1>
             <p className="text-lg text-text-secondary text-center mb-8">
-                Have a question or want to schedule a session? Fill out the form below.
+                Tem uma pergunta ou deseja agendar uma sessão? Preencha o formulário abaixo.
             </p>
 
             {isSubmitted ? (
                 <div className="p-6 bg-emerald-50 text-emerald-800 rounded-lg text-center">
                     <h2 className="text-2xl font-bold mb-2">Thank You!</h2>
-                    <p>Your message has been sent successfully. We will get back to you shortly.</p>
+                    <p>Mensagem enviada</p>
                 </div>
             ) : (
                 <div className="bg-base-100 p-8 rounded-lg shadow-lg border">
                     <form onSubmit={handleSubmit} className="space-y-6">
                         <div>
-                            <label htmlFor="name" className="block text-sm font-medium text-text-secondary">Full Name</label>
+                            <label htmlFor="name" className="block text-sm font-medium text-text-secondary">Nome</label>
                             <input
                                 type="text"
                                 id="name"
@@ -46,7 +46,7 @@ const ContactPage: React.FC = () => {
                             />
                         </div>
                         <div>
-                            <label htmlFor="email" className="block text-sm font-medium text-text-secondary">Email Address</label>
+                            <label htmlFor="email" className="block text-sm font-medium text-text-secondary">Email</label>
                             <input
                                 type="email"
                                 id="email"
@@ -57,7 +57,7 @@ const ContactPage: React.FC = () => {
                             />
                         </div>
                         <div>
-                            <label htmlFor="message" className="block text-sm font-medium text-text-secondary">Message</label>
+                            <label htmlFor="message" className="block text-sm font-medium text-text-secondary">Mensagem</label>
                             <textarea
                                 id="message"
                                 value={message}
@@ -71,7 +71,7 @@ const ContactPage: React.FC = () => {
                             type="submit"
                             className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
                         >
-                            Send Message
+                            Enviar
                         </button>
                     </form>
                 </div>

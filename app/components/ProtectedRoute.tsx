@@ -5,27 +5,30 @@ import { useRouter } from 'next/navigation';
 import { useApp } from '../hooks/useApp';
 import { UserRole } from '../../types';
 
-interface ProtectedRouteProps {
-    children: React.ReactNode;
-}
+const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  const { role, loading, user } = useApp();
+  const router = useRouter();
 
-const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
-    const { role } = useApp();
-    const router = useRouter();
-
-    useEffect(() => {
-        // Redirect non-admin users to login page
-        if (role !== UserRole.Admin) {
-            router.push('/login');
-        }
-    }, [role, router]);
-
-    // Show nothing while redirecting
-    if (role !== UserRole.Admin) {
-        return null;
+  useEffect(() => {
+    if (user?.role !== 'Admin') {
+      //const from = searchParams.get('from') || '/admin';
+      router.push('/login');
     }
+    
+  }, [role, user, router]);
 
-    return <>{children}</>;
+  // ⏳ Wait for auth check
+  if (loading) {
+    return null; // or spinner
+  }
+
+  if (role !== UserRole.Admin) {
+    return null;
+  }
+
+  return <>{children}</>;
 };
 
-export default ProtectedRoute
+export default ProtectedRoute;

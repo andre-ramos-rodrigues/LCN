@@ -15,7 +15,8 @@ interface AppContextType {
     setRole: (role: UserRole) => void;
     user: UserData | null;
     setUser: (user: UserData | null) => void;
-    logout: () => void;
+    logout: () => Promise<void>;
+    isAdmin: boolean;
     posts: Post[];
     messages: Message[];
     addMessage: (messageData: { name: string; email: string; message: string; }) => Promise<void>;
@@ -65,39 +66,44 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const [loading, setLoading] = useState(true);
     const [post, setPost] = useState<Post | undefined>(undefined);
 
-    // Load user from localStorage on mount
+
+  const logout = useCallback(async () => {
+    await fetch('/api/auth/logout', {
+      method: 'POST',
+      credentials: 'include',
+    });
+
+    setUser(null);
+  }, []);
+
+
     useEffect(() => {
-        const storedUser = localStorage.getItem('user');
-        if (storedUser) {
-            try {
-                const userData = JSON.parse(storedUser);
-                setUser(userData);
-                setRole(userData.role);
-            } catch (error) {
-                console.error('Failed to parse stored user:', error);
-            }
+    const fetchMe = async () => {
+        try {
+          const res = await fetch('/api/auth/me', {
+            credentials: 'include',
+          });
+
+          if (!res.ok) {
+            setUser(null);
+            console.log('User not authenticated');
+            return;
+          }
+
+          const data = await res.json();
+          console.log('Fetched user data:', data);
+
+          setUser(data.user); // ✅ FIX
+          console.log(data.user?.name);
+        } catch {
+          setUser(null);
+        } finally {
+          setLoading(false);
         }
-        setLoading(false);
-    }, []);
+      };
 
-    // Save user to localStorage whenever it changes
-    useEffect(() => {
-        if (user) {
-            localStorage.setItem('user', JSON.stringify(user));
-        } else {
-            localStorage.removeItem('user');
-        }
-    }, [user]);
-
-    const logout = useCallback(() => {
-        setUser(null);
-        setRole(UserRole.Visitor);
-        localStorage.removeItem('user');
-    }, []);
-
-    // Fetch posts from database on mount
-    useEffect(() => {
-        const fetchPosts = async () => {
+  fetchMe();
+          const fetchPosts = async () => {
             try {
                 const response = await fetch('/api/posts');
                 if (response.ok) {
@@ -114,6 +120,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             }
         };
 
+        fetchMe();  
         fetchPosts();
     }, []);
 
@@ -408,6 +415,7 @@ const createSocial = useCallback(async (data: {
     const value = useMemo(() => ({
         role,
         setRole,
+        isAdmin: role === UserRole.Admin,
         user,
         setUser,
         logout,

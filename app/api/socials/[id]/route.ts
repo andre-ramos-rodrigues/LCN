@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/app/lib/prisma';
+import { cookies } from 'next/headers';
 
 /*
 type Params = {
@@ -24,7 +25,19 @@ const { id } = await params;
 }
 
 export async function PUT(req: Request, { params }: Params) {
-    const { id } = await params;
+  const cookieStore = await cookies();
+  const token = cookieStore.get('auth_token')?.value;
+  const role = cookieStore.get('role')?.value;
+
+  if (!token) {
+    return NextResponse.json({ user: null }, { status: 401 });
+  }
+
+  if (role !== 'Admin') {
+    return NextResponse.json({ user: null }, { status: 402 });
+  }
+
+  const { id } = await params;
   const data = await req.json();
 
   const updated = await prisma.socialLink.update({

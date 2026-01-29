@@ -1,11 +1,24 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/app/lib/prisma';
+import { cookies } from 'next/headers';
 
 export async function PUT(
   request: Request,
   context: { params: Promise<{ postId: string }> }
 ) {
   try {
+
+  const cookieStore = await cookies();
+  const token = cookieStore.get('auth_token')?.value;
+  const role = cookieStore.get('role')?.value;
+
+  if (!token) {
+    return NextResponse.json({ user: null }, { status: 401 });
+  }
+
+  if (role !== 'Admin') {
+    return NextResponse.json({ user: null }, { status: 402 });
+  }
 
     const { postId } = await context.params;
 
@@ -71,6 +84,17 @@ export async function DELETE(
   request: Request,
   context: { params: Promise<{ postId: string }> }
 ) {
+  const cookieStore = await cookies();
+  const token = cookieStore.get('auth_token')?.value;
+  const role = cookieStore.get('role')?.value;
+
+  if (!token) {
+    return NextResponse.json({ user: null }, { status: 401 });
+  }
+
+  if (role !== 'Admin') {
+    return NextResponse.json({ user: null }, { status: 402 });
+  }
   try {
      const { postId } = await context.params;
     // Optional: check if post exists first
@@ -108,6 +132,17 @@ export async function PATCH(
   context: { params: Promise<{ postId: string }> }
 ) {
   try {
+  const cookieStore = await cookies();
+  const token = cookieStore.get('auth_token')?.value;
+  const role = cookieStore.get('role')?.value;
+
+  if (!token) {
+    return NextResponse.json({ user: null }, { status: 401 });
+  }
+
+  if (role !== 'Admin') {
+    return NextResponse.json({ user: null }, { status: 402 });
+  }
     const { postId } = await context.params;
 
     console.log('Patching post with ID:', postId);

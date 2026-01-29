@@ -3,6 +3,8 @@
 import React, { useEffect, useState } from 'react';
 import { Comment } from '../../types';
 import CommentModeration from '../components/CommentModeration'; 
+import { useApp } from '../hooks/useApp';
+import { useRouter } from 'next/navigation';
 
 type ModerationComment = Comment & {
   postId: string;
@@ -13,11 +15,20 @@ const ClientDashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState('comments');
   const [pendingComments, setPendingComments] = useState<ModerationComment[]>([]);
   const [loading, setLoading] = useState(false);
+  const { user } = useApp();
+  const router = useRouter();
 
   /* =========================
      Fetch pending comments
   ========================= */
   useEffect(() => {
+    if (user?.role !== 'Admin') {
+      console.log('Access denied: User is not an admin');
+
+      router.push('/login');
+      return
+    }
+    
     const fetchPendingComments = async () => {
       try {
         setLoading(true);

@@ -40,21 +40,21 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId, comments }) => 
             </div>
           ))
         ) : (
-          <p className="text-text-secondary">No comments yet. Be the first to share your thoughts!</p>
+          <p className="text-text-secondary">Seja o primeiro a comentar na publicação!</p>
         )}
       </div>
 
       <div className="mt-10 pt-10 border-t">
-        <h4 className="text-xl font-bold text-text-primary mb-4">Leave a Comment</h4>
+        <h4 className="text-xl font-bold text-text-primary mb-4">Escreva um cometário</h4>
         {submitted ? (
             <div className="p-4 bg-emerald-50 text-emerald-700 rounded-lg">
-                <p className="font-semibold">Thank you for your comment!</p>
-                <p>It has been submitted for moderation and will appear once approved.</p>
+                <p className="font-semibold">Obrigado por comentar!</p>
+                <p>Seu comentário foi enviado para moderação e aparecerá assim que for aprovado.</p>
             </div>
         ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-                <label htmlFor="author" className="block text-sm font-medium text-text-secondary">Name</label>
+                <label htmlFor="author" className="block text-sm font-medium text-text-secondary">Nome</label>
                 <input
                 type="text"
                 id="author"
@@ -65,7 +65,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId, comments }) => 
                 />
             </div>
             <div>
-                <label htmlFor="content" className="block text-sm font-medium text-text-secondary">Comment</label>
+                <label htmlFor="content" className="block text-sm font-medium text-text-secondary">Comentário</label>
                 <textarea
                 id="content"
                 value={content}
@@ -79,7 +79,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId, comments }) => 
                 type="submit"
                 className="inline-flex items-center px-6 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors"
             >
-                Submit Comment
+                Enviar
             </button>
             </form>
         )}

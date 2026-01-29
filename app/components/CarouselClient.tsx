@@ -65,7 +65,7 @@ const CarouselClient: React.FC<Props> = ({ posts }) => {
                     href={`/post/${currentPost.id}`}
                     className="mt-4 inline-block bg-primary px-6 py-2 rounded-md"
                 >
-                    Read More
+                    Leia mais
                 </Link>
             </div>
 

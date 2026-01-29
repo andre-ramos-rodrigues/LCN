@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useTheme } from '../hooks/useTheme';
 import { useRouter } from 'next/navigation';
 import SocialLinksAdmin from '../components/SocialAdmin';
+import { useApp } from '../hooks/useApp';
 
 const ColorInput: React.FC<{
   label: string;
@@ -40,12 +41,17 @@ const AdminDashboard: React.FC = () => {
 
   const router = useRouter();
   const [saving, setSaving] = useState(false);
+  const { user } = useApp();
 
   // 1️⃣ Ensure freshest theme from DB
-  /*
+  
   useEffect(() => {
-    getTheme();
-  }, [getTheme]);*/
+   if (user?.role !== 'Admin') {
+      console.log('Access denied: User is not an admin');
+
+      router.push('/login');
+      return
+  }}, [router, user]);
 
   const handleThemeChange = (
     e: React.ChangeEvent<HTMLInputElement>
