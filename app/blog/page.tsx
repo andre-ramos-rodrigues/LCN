@@ -11,7 +11,6 @@ const BlogPage: React.FC = () => {
     const { posts, role, deletePost, setEditingPostId } = useApp();
     const [searchTerm, setSearchTerm] = useState('');
     const router = useRouter();
-    //const pathname = usePathname();
 
     const handleEdit = (postId: string) => {
         setEditingPostId(postId);
@@ -51,7 +50,7 @@ const BlogPage: React.FC = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {filteredPosts.length > 0 ? (
                     filteredPosts.map(post => (
-                        <div key={post.id} className="bg-base-100 rounded-lg shadow-lg overflow-hidden border flex flex-col group">
+                        <div key={post.id} className="bg-base-100 rounded-lg shadow-lg overflow-hidden border border-blue-200 flex flex-col group">
                             <div className="overflow-hidden rounded-t-lg">
                                 <Image src={post.imageUrls[0]} alt={post.title} className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                                 width={1000}
