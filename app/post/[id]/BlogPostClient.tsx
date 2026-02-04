@@ -6,6 +6,7 @@ import Image from 'next/image';
 import CommentSection from '../../components/CommentSection';
 import { UserRole } from '@/types';
 import { useAppContext } from '@/app/context/useAppContext';
+import { useApp } from '../../hooks/useApp';
 
 type Props = {
   post: any;
@@ -15,6 +16,7 @@ type Props = {
 export default function BlogPostClient({ post, role }: Props) {
   const router = useRouter();
   const { deletePost, setEditingPostId } = useAppContext();
+  const { user} = useApp();
 
   const imageUrls = post.imageUrls ?? [];
   const additionalImages = imageUrls.slice(1);
@@ -33,19 +35,19 @@ export default function BlogPostClient({ post, role }: Props) {
 
   return (
     <>
-      {role === UserRole.Admin && (
+      {user?.role && (
         <div className="my-6 p-4 bg-primary/10 rounded-lg flex justify-end space-x-4">
           <button
             onClick={handleEdit}
             className="px-4 py-2 text-sm bg-secondary text-white rounded-md"
           >
-            Edit Post?
+            Edit
           </button>
           <button
             onClick={handleDelete}
             className="px-4 py-2 text-sm bg-red-600 text-white rounded-md"
           >
-            Delete Post?
+            Delete
           </button>
         </div>
       )}
